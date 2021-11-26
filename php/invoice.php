@@ -18,7 +18,7 @@ if(isset($_SESSION['user_id'])){
  exit;
 }
 $id= $_SESSION['user_id'];
-
+$total=0;
 
 require('../fpdf/fpdf184/fpdf.php');
 $pdf = new FPDF();
@@ -43,7 +43,7 @@ $pdf->Cell(40,10,"Email");
 $pdf->Cell(40,10,$_SESSION['user_email']);
 $pdf->ln(5);
 $pdf->Cell(40,10,"Card Number");
-$pdf->Cell(40,10,$_SESSION['counter']);
+$pdf->Cell(40,10,$_SESSION['cardnumber']);
 $pdf->ln(5);
 
 $pdf->ln(10);
@@ -69,7 +69,12 @@ while($data=mysqli_fetch_array($query)){
     $pdf->Cell(40,20,$data['price']/$data['quantity'],0,0,'C');
     
     $pdf->Cell(40,20,$data['price'],0,1,'C');
+    $total= $total+$data['price'];
 }
+$pdf->SetFont('Arial','B',16);
+$pdf->Cell(90,20,"",0,0);
+$pdf->Cell(40,20,"Total BZD:",1  ,0,'C');
+$pdf->Cell(40,20,$total,1  ,0,'C');
 $pdf->Output();
 
 
